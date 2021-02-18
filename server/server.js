@@ -28,15 +28,15 @@ io.on('connection', (sock) => {
         }
     });
 
-    sock.on('message', text => {
-        if (text !== '' && text !== ' ')
-            io.emit('message', text);
-    });
-
     sock.on('disconnect', () => {
         playerMap.delete(sock.id);
         io.emit('removePlayer', sock.id)
     })
+
+    sock.on('message', text => {
+        if (text !== '' && text !== ' ')
+            io.emit('message', sock.id + '::' + text);
+    });
 })
 
 

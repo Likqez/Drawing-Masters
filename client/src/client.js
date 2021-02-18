@@ -1,9 +1,16 @@
-const addMessage = (text, id) => {
+const addMessage = (name, text) => {
     const parent = document.querySelector('#events');
-    const el = document.createElement('li');
-    el.textContent = text;
+    const child = document.createElement('li');
+    const elname = document.createElement('span')
+    const eltext = document.createElement('span')
 
-    parent.appendChild(el);
+    elname.textContent = name + ": ";
+    elname.style.fontWeight = "bold";
+    eltext.textContent = text;
+
+    child.appendChild(elname);
+    child.appendChild(eltext);
+    parent.appendChild(child);
     parent.scrollTop = parent.scrollHeight;
 };
 
@@ -125,7 +132,11 @@ const getBoard = (canvas) => {
     let playerMap = new Map;
 
     const sock = io();
-    sock.on('message', addMessage);
+    sock.on('message', msg => {
+        const s = msg.split('::');
+        const name = playerMap.get(s[0]);
+        addMessage(name, s[1]);
+    });
 
     sock.on('fetchplayers', msg => {
         if (playerMap.size === 0) {
