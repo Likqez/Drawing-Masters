@@ -1,0 +1,153 @@
+body {
+    margin: 0;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 25% 1fr 25%;
+    grid-template-rows: auto 7.5% 1fr auto;
+    gap: 0 0;
+    grid-template-areas:
+    "Header Header Header"
+    ". Hint ."
+    "Players Canvas Chat"
+    "Footer Footer Footer";
+
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+
+.Header {
+    grid-area: Header;
+    background-color: white;
+    align-self: center;
+}
+
+.Footer {
+    grid-area: Footer;
+    background-color: white;
+    padding: 1vh;
+}
+
+.Canvas {
+    grid-area: Canvas;
+    border: 5px dotted red;
+    margin: 0 auto;
+    background-color: white;
+    display: inline-block;
+    align-self: center;
+}
+
+.Hint {
+    grid-area: Hint;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.Players {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6,1fr);
+    gap: 0 0;
+
+    grid-area: Players;
+    border-radius: 2rem;
+    background-color: white;
+    margin: 20px;
+
+    border: 1px solid black;
+}
+
+.player {
+    display: grid;
+    grid-template-columns: 25% 1fr;
+    grid-template-rows: 1fr;
+    gap: 0 0;
+
+    margin:0 -1px -1px 0;
+
+    align-items: center;
+}
+
+.player>img {
+    object-fit: cover;
+    width: 75%;
+    max-height: 100%;
+}
+
+.Chat {
+    grid-area: Chat;
+    background-color: rgb(255, 255, 255);
+    width: 350px;
+    margin: 20px;
+    border: 1px solid lightgrey;
+    align-self: center;
+}
+
+#events {
+    list-style: none;
+    margin: 0;
+    padding-left: 10px;
+    padding-top: 5px;
+    border-bottom: 1px solid lightgrey;
+    overflow-y: scroll;
+    height: 650px;
+}
+
+.chat-input {
+    outline: none;
+    font-size: 1.0rem;
+    padding: 0 5px;
+}
+
+.chat-wrapper {
+    padding: 10px;
+}
+
+.chat-wrapper form {
+    display: flex;
+}
+
+.chat-wrapper form input {
+    font-size: 1.0rem;
+    margin: 0 10px 0 0;
+    padding: 0 5px;
+    flex-grow: 1;
+}
+
+.chat-wrapper form button {
+    width: 80px;
+}
+
+#say {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    padding: 3px 15px;
+    color: white;
+    line-height: 25px;
+    background-color: #00bcd4;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px;
+    transition: all 150ms ease-in;
+    outline: none;
+}
+
+.logo {
+    padding-left: 5px;
+    max-height: 50px;
+}
+
+.disable-select{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}

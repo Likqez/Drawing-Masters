@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Drawing Masters</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="img/favicon.png">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+
+
+<!-- Main Section START-->
+<main class="grid-container">
+
+    <!-- Header START -->
+    <header class="Header disable-select">
+        <a href="#">
+            <img class="logo" src='img/header.png' alt="Drawing Masters Logo">
+        </a>
+    </header>
+    <!-- Header END -->
+
+    <section class="Hint disable-select">
+        <p>_____ ____</p>
+    </section>
+
+
+    <section class="Players">
+
+    </section>
+
+    <section class="Canvas">
+        <canvas height="700" width="950">Please update your browser!</canvas>
+    </section>
+
+
+    <section class="Chat">
+        <ul id="events"></ul>
+        <section class="chat-wrapper">
+            <form id="chat-form">
+                <input class="chat-input" autocomplete="off" title="chat"/>
+                <button id="say">Chat</button>
+            </form>
+        </section>
+    </section>
+
+    <!-- Footer START -->
+    <footer class="Footer disable-select">
+        <p>&copy 2020 Lukas Lanzner</p>
+    </footer>
+    <!-- Footer END -->
+
+</main>
+<!-- Main Section END -->
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="src/client.js"></script>
+</body>
+</html>
