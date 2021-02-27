@@ -28,6 +28,10 @@ io.on('connection', (sock) => {
         }
     });
 
+    sock.on('sendSketch', msg => {
+        io.emit('drawSketch', msg);
+    })
+
     sock.on('disconnect', () => {
         playerMap.delete(sock.id);
         io.emit('removePlayer', sock.id)

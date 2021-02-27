@@ -1,3 +1,14 @@
+function Drawing(fromX, toX, fromY, toY, color, size) {
+    this.fromX = fromX;
+    this.toX = toX;
+    this.fromY = fromY;
+    this.toY = toY;
+    this.color = color;
+    this.size = size;
+}
+
+let drawingSettings = {tool: "pen", size: 10, color: "black"}
+
 const addMessage = (name, text) => {
     const parent = document.querySelector('#events');
     const child = document.createElement('li');
@@ -64,7 +75,7 @@ const onChatSubmitted = (sock) => (e) => {
         sock.emit('message', text)
 };
 
-const getBoard = (canvas) => {
+const getBoard = (canvas, sock) => {
     const ctx = canvas.getContext('2d')
 
     let coord = {x: 0, y: 0};
@@ -98,17 +109,27 @@ const getBoard = (canvas) => {
         if (!paint) return;
         ctx.beginPath();
 
-        ctx.lineWidth = 10;
+        let sketch = new Drawing(0, 0, 0, 0, drawingSettings.color, drawingSettings.size,)
+
+        ctx.lineWidth = drawingSettings.size;
 
         // Sets the end of the lines drawn
         // to a round shape.
         ctx.lineCap = 'round';
 
-        ctx.strokeStyle = 'black';
+        //Choose the tool to draw
+        if (drawingSettings.tool === "pen") {
+            ctx.strokeStyle = drawingSettings.color;
+        } else if (drawingSettings.tool === "eraser") {
+            ctx.strokeStyle = 'white';
+            sketch.color = 'white';
+        }
 
         // The cursor to start drawing
         // moves to this coordinate
         ctx.moveTo(coord.x, coord.y);
+        sketch.fromX = coord.x;
+        sketch.fromY = coord.y;
 
         // The position of the cursor
         // gets updated as we move the
@@ -118,20 +139,38 @@ const getBoard = (canvas) => {
         // A line is traced from start
         // coordinate to this coordinate
         ctx.lineTo(coord.x, coord.y);
+        sketch.toX = coord.x;
+        sketch.toY = coord.y;
 
         // Draws the line.
         ctx.stroke();
+
+        sock.emit('sendSketch', JSON.stringify(sketch));
     };
 
-    return {startPainting, stopPainting, sketch, reOffset};
+    const drawSketch = (sketch) => {
+        ctx.beginPath();
+
+        ctx.lineWidth = sketch.size;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = sketch.color;
+
+        ctx.moveTo(sketch.fromX, sketch.fromY);
+        ctx.lineTo(sketch.toX, sketch.toY)
+
+        ctx.stroke();
+    }
+
+    return {startPainting, stopPainting, sketch, reOffset, drawSketch};
 }
 
 (() => {
     const canvas = document.querySelector('canvas');
-    const {startPainting, stopPainting, sketch, reOffset} = getBoard(canvas);
+    const sock = io();
+    const {startPainting, stopPainting, sketch, reOffset, drawSketch} = getBoard(canvas, sock);
     let playerMap = new Map;
 
-    const sock = io();
+
     sock.on('message', msg => {
         const s = msg.split('::');
         const name = playerMap.get(s[0]);
@@ -166,6 +205,11 @@ const getBoard = (canvas) => {
 
         console.log("Player disconnected: " + s[1]);
     });
+
+    sock.on('drawSketch', (msg) => {
+        const sketch = JSON.parse(msg);
+        drawSketch(sketch);
+    })
 
     //Request Player list
     sock.emit('requestplayers', '');
